@@ -5,21 +5,28 @@ import Part from './Part';
 const Content = props => {
     return (
         <div>
-            <Part part={props.part1} exercises={props.exercises1} />
-            <Part part={props.part2} exercises={props.exercises2} />
-            <Part part={props.part3} exercises={props.exercises3} />
+            <Part part={props.part1.name} exercises={props.part1.exercises} />
+            <Part part={props.part2.name} exercises={props.part2.exercises} />
+            <Part part={props.part3.name} exercises={props.part3.exercises} />
         </div>
     )
 }
 
 Content.propTypes = {
     props: PropTypes.shape({
-        part1: PropTypes.string,
-        part2: PropTypes.string,
-        part3: PropTypes.string,
-        exercises1: PropTypes.number,
-        exercises2: PropTypes.number,
-        exercises3: PropTypes.number,
+        part1: PropTypes.shape({
+            name: PropTypes.string,
+            exercises: PropTypes.number
+        }),
+        part2: PropTypes.shape({
+            name: PropTypes.string,
+            exercises: PropTypes.number
+        }),
+        part3: PropTypes.shape({
+            name: PropTypes.string,
+            exercises: PropTypes.number
+        })
+
     })
 }
 
