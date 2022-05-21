@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Statistics = ({name,value}) => <p>{name} <span>{value}</span></p>
+const Statistic = ({name,value}) => <p>{name} <span>{value}</span></p>
+const Button = ({name,handleClick}) => <button onClick={handleClick}>{name}</button>
 
 const App = () => {
   // save clicks of each button to its own state
@@ -32,21 +33,19 @@ const App = () => {
   return (
     <div>
       <h1>Give feedback</h1>
-      <div>
-        <button onClick={handleGood}>Good</button>
-        <button onClick={handleNeutral}>Neutral</button>
-        <button onClick={handleBad}>Bad</button>
-      </div>
+        <Button handleClick={handleGood} name='Good'/>
+        <Button handleClick={handleNeutral} name='Neutral'/>
+        <Button handleClick={handleBad} name='Bad'/>
       <h2>Statistics</h2>
       { total === 0 ? 
         <p>No feedback given</p> :
         <>
-          <Statistics name='Good' value={good}/>
-          <Statistics name='Neutral' value={neutral}/>
-          <Statistics name='Bad' value={bad}/>
-          <Statistics name='All' value={total}/>
-          <Statistics name='Average' value={average}/>
-          <Statistics name='Positive' value={positive}/>
+          <Statistic name='Good' value={good}/>
+          <Statistic name='Neutral' value={neutral}/>
+          <Statistic name='Bad' value={bad}/>
+          <Statistic name='All' value={total}/>
+          <Statistic name='Average' value={average}/>
+          <Statistic name='Positive' value={positive}/>
         </>
       }
     </div>
