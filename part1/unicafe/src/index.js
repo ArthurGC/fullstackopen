@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Statistic = ({name,value}) => <p>{name} <span>{value}</span></p>
+const Statistic = ({name,value}) => {
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{value}</td>
+    </tr>
+  )
+}
 const Button = ({name,handleClick}) => <button onClick={handleClick}>{name}</button>
 
 const App = () => {
@@ -39,14 +46,16 @@ const App = () => {
       <h2>Statistics</h2>
       { total === 0 ? 
         <p>No feedback given</p> :
-        <>
-          <Statistic name='Good' value={good}/>
-          <Statistic name='Neutral' value={neutral}/>
-          <Statistic name='Bad' value={bad}/>
-          <Statistic name='All' value={total}/>
-          <Statistic name='Average' value={average}/>
-          <Statistic name='Positive' value={positive}/>
-        </>
+        <table>
+          <tbody>
+            <Statistic name='Good' value={good}/>
+            <Statistic name='Neutral' value={neutral}/>
+            <Statistic name='Bad' value={bad}/>
+            <Statistic name='All' value={total}/>
+            <Statistic name='Average' value={average}/>
+            <Statistic name='Positive' value={positive}/> 
+          </tbody>
+        </table>
       }
     </div>
   )
