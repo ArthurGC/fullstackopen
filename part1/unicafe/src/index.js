@@ -21,17 +21,13 @@ const App = () => {
     setBad(bad + 1)
   }
 
-  const total = () => good + neutral + bad
+  let total =  good + neutral + bad
 
-  const average = () => {
-    let result = (good - bad)/total()
-    return result || 0
-  }
+  let average = (good - bad)/total || 0
 
-  const positive = () => {
-    let result = good/total() * 100
-    return result ? `${result} %` : '0 %'
-  }
+  let positiveGood = total ? good/total * 100 : 0
+
+  let positive = `${positiveGood} %`
 
   return (
     <div>
@@ -42,12 +38,17 @@ const App = () => {
         <button onClick={handleBad}>Bad</button>
       </div>
       <h2>Statistics</h2>
-      <Statistics name='Good' value={good}/>
-      <Statistics name='Neutral' value={neutral}/>
-      <Statistics name='Bad' value={bad}/>
-      <Statistics name='All' value={total()}/>
-      <Statistics name='Average' value={average()}/>
-      <Statistics name='Positive' value={positive()}/>
+      { total === 0 ? 
+        <p>No feedback given</p> :
+        <>
+          <Statistics name='Good' value={good}/>
+          <Statistics name='Neutral' value={neutral}/>
+          <Statistics name='Bad' value={bad}/>
+          <Statistics name='All' value={total}/>
+          <Statistics name='Average' value={average}/>
+          <Statistics name='Positive' value={positive}/>
+        </>
+      }
     </div>
   )
 }
