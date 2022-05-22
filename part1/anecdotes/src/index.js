@@ -3,16 +3,26 @@ import ReactDOM from 'react-dom'
 import Button from './Button'
 
 const App = ({anecdotes}) => {
+  let initialArray = Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf,0)
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(initialArray)
 
   const handleNewComment = () => {
     let random = Math.floor(Math.random() * (anecdotes.length))
     setSelected(random)
   }
 
+  const handleVote = () => {
+    let newVotes = [...votes]
+    newVotes[selected] += 1
+    setVotes(newVotes)
+  }
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+      <Button name='Vote' handleClick={handleVote}/>
       <Button name='Next anecdote' handleClick={handleNewComment} />
     </div>
   )
