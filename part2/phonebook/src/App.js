@@ -10,11 +10,16 @@ const App = () => {
   const handleName = (event) => setNewName(event.target.value)
   const AddPerson = (event) => {
     event.preventDefault();
-    const newPerson = {
-      name: newName
+    let isRepeated = persons.find((person) => person.name === newName)
+    if (isRepeated) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      const newPerson = {
+        name: newName
+      }
+      setPersons(persons.concat(newPerson))
+      setNewName('')
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
   }
 
   return (
