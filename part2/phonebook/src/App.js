@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { nanoid } from 'nanoid'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import ListPerson from './components/ListPerson'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -12,7 +14,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [wordFiltered, setWordFiltered] = useState('')
 
-  const personsToShow = wordFiltered.trim() 
+  const personsToShow = wordFiltered.trim()
     ? persons.filter((person) => person.name.toLowerCase().includes(wordFiltered.toLowerCase()))
     : persons
 
@@ -42,25 +44,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter shown with: <input value={wordFiltered} onChange={handleFilter}/>
-      </div>
+      <Filter filter={wordFiltered} handleChange={handleFilter} />
       <h2>Add a new</h2>
-      <form onSubmit={AddPerson}>
-        <div>
-          name: <input value={newName} onChange={handleName} />
-        </div>
-        <div>
-          number: <input type="number" value={newNumber} onChange={handleNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        name={newName}
+        number={newNumber}
+        handleName={handleName}
+        handleNumber={handleNumber}
+        handleSubmit={AddPerson}
+      />
       <h2>Numbers</h2>
-      {personsToShow.map((person) => {
-        return <p key={nanoid()}>{person.name} {person.number}</p>
-      })}
+      <ListPerson persons={personsToShow} />
     </div>
   )
 }
