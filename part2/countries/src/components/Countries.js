@@ -9,7 +9,7 @@ const Countries = ({ countries, handleClick }) => {
                     return (
                         <div key={nanoid()}>
                             <p>{country.name.common}</p>
-                            <button onClick={() => handleClick(country.name.common)}>Show</button>
+                            <button onClick={() => handleClick(country.name.official)}>Show</button>
                         </div>
                     )
                 })

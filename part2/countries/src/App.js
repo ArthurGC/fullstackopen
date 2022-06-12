@@ -22,7 +22,10 @@ const App = () => {
   }
 
   const handleClick = (name) => {
-    getCountries(name)
+    axios.get(`https://restcountries.com/v3.1/name/${name}?fullText=true`)
+    .then(result => {
+      setCountries(result.data)
+    })
   }
 
   const contentLength = countries.length > 10
