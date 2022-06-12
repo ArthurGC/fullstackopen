@@ -21,6 +21,10 @@ const App = () => {
       })
   }
 
+  const handleClick = (name) => {
+    getCountries(name)
+  }
+
   const contentLength = countries.length > 10
   const finderIsEmpty = country.trim()
   const showCountry = countries.length === 1
@@ -30,7 +34,7 @@ const App = () => {
       <Search handleOnChange={handleOnChange} value={country} />
       {contentLength && finderIsEmpty && <p>Too many matches, specify another filter.</p>}
       {!contentLength && finderIsEmpty && !showCountry
-        && <Countries countries={countries} />
+        && <Countries countries={countries} handleClick={handleClick} />
       }
       {showCountry && finderIsEmpty
         && <Country country={countries[0]} />}
