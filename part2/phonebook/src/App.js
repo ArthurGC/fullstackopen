@@ -23,7 +23,7 @@ const App = () => {
   const handleNumber = (event) => setNewNumber(event.target.value)
   const handleFilter = (event) => setWordFiltered(event.target.value)
 
-  const AddPerson = (event) => {
+  const AddPerson = async (event) => {
     event.preventDefault();
     let isEmpty = newName.trim() && newNumber.trim()
     let isRepeated = persons.find((person) => person.name === newName)
@@ -36,9 +36,14 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(newPerson))
-      setNewName('')
-      setNewNumber('')
+      try {
+        let { data } = await axios.post("http://localhost:3001/persons", newPerson)
+        setPersons(persons.concat(data))
+        setNewName('')
+        setNewNumber('')
+      } catch (error) {
+        console.log("There's an error when you try to add a new person.");
+      }
     }
   }
 
