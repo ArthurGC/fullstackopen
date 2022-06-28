@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import ListPerson from './components/ListPerson'
-import axios from 'axios'
+import actions from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,9 +11,16 @@ const App = () => {
   const [wordFiltered, setWordFiltered] = useState('')
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons")
-      .then(response => setPersons(response.data))
+    getAllPersons()
   }, [])
+
+  const getAllPersons = async () => {
+    try {
+      setPersons(await actions.getAll())
+    } catch (error) {
+      console.log("There's an error when you try to get persons' list.");
+    }
+  }
 
   const personsToShow = wordFiltered.trim()
     ? persons.filter((person) => person.name.toLowerCase().includes(wordFiltered.toLowerCase()))
@@ -37,8 +44,7 @@ const App = () => {
         number: newNumber
       }
       try {
-        let { data } = await axios.post("http://localhost:3001/persons", newPerson)
-        setPersons(persons.concat(data))
+        setPersons(persons.concat(await actions.create(newPerson)))
         setNewName('')
         setNewNumber('')
       } catch (error) {
