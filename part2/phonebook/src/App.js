@@ -18,7 +18,7 @@ const App = () => {
     try {
       setPersons(await actions.getAll())
     } catch (error) {
-      console.log("There's an error when you try to get persons' list.");
+      console.error("There's an error when you try to get persons' list.");
     }
   }
 
@@ -33,11 +33,23 @@ const App = () => {
   const AddPerson = async (event) => {
     event.preventDefault();
     let isEmpty = newName.trim() && newNumber.trim()
-    let isRepeated = persons.find((person) => person.name === newName)
+    let personRepeated = persons.find((person) => person.name === newName)
     if (!isEmpty) {
       alert('Fields are empty!')
-    } else if (isRepeated) {
-      alert(`${newName} is already added to phonebook`)
+    } else if (personRepeated) {
+      if (window.confirm(`${personRepeated.name} is already added to phonebook, the old number with a new one?`)) {
+        const modifiedPerson = {
+          ...personRepeated, number: newNumber
+        }
+        try {
+          const newPerson = await actions.update(personRepeated.id, modifiedPerson)
+          setPersons(persons.map(person => person.id !== personRepeated.id ? person : newPerson))
+          setNewName('')
+          setNewNumber('')
+        } catch (error) {
+          console.error("There's an error when you try to delete a person.");
+        }
+      }
     } else {
       const newPerson = {
         name: newName,
@@ -48,7 +60,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       } catch (error) {
-        console.log("There's an error when you try to add a new person.");
+        console.error("There's an error when you try to add a new person.");
       }
     }
   }
@@ -60,7 +72,7 @@ const App = () => {
         await actions.remove(id)
         setPersons(persons.filter(person => person.id !== id))
       } catch (error) {
-        console.log("There's an error when you try to delete a person.");
+        console.error("There's an error when you try to delete a person.");
       }
     }
   }

@@ -16,10 +16,16 @@ const remove = async (id) => {
     return request
 }
 
+const update = async (id, modifiedNote) => {
+    const { data } = await axios.put(`${baseUrl}/${id}`, modifiedNote)
+    return data
+}
+
 const actions = {
     getAll: getAll,
     create: create,
     remove: remove,
+    update: update,
 }
 
 export default actions
