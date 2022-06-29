@@ -1,12 +1,11 @@
 import React from 'react'
-import { nanoid } from 'nanoid'
 import Person from './Person'
 
-const ListPerson = ({persons}) => {
+const ListPerson = ({ persons, handleDelete }) => {
     return (
         <div>
             {persons.map((person) => {
-                return <Person key={nanoid()} name={person.name} number={person.number}/>
+                return <Person key={person.id} person={person} handleDelete={handleDelete} />
             })}
         </div>
     )

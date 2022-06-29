@@ -53,6 +53,18 @@ const App = () => {
     }
   }
 
+  const removePerson = async (id) => {
+    let personSelected = persons.find(person => person.id === id)
+    if (window.confirm(`Delete ${personSelected.name} ?`)) {
+      try {
+        await actions.remove(id)
+        setPersons(persons.filter(person => person.id !== id))
+      } catch (error) {
+        console.log("There's an error when you try to delete a person.");
+      }
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -66,7 +78,7 @@ const App = () => {
         handleSubmit={AddPerson}
       />
       <h2>Numbers</h2>
-      <ListPerson persons={personsToShow} />
+      <ListPerson persons={personsToShow} handleDelete={removePerson} />
     </div>
   )
 }

@@ -11,9 +11,15 @@ const create = async (newNote) => {
     return data
 }
 
+const remove = async (id) => {
+    const request = await axios.delete(`${baseUrl}/${id}`)
+    return request
+}
+
 const actions = {
     getAll: getAll,
     create: create,
+    remove: remove,
 }
 
 export default actions
