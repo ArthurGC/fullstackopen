@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import ListPerson from './components/ListPerson'
+import SuccessNotification from './components/SuccessNotification'
 import actions from './services/persons'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [wordFiltered, setWordFiltered] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     getAllPersons()
@@ -46,6 +49,10 @@ const App = () => {
           setPersons(persons.map(person => person.id !== personRepeated.id ? person : newPerson))
           setNewName('')
           setNewNumber('')
+          setSuccessMessage(`The ${personRepeated.name}'s number was updated.`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         } catch (error) {
           console.error("There's an error when you try to delete a person.");
         }
@@ -59,6 +66,10 @@ const App = () => {
         setPersons(persons.concat(await actions.create(newPerson)))
         setNewName('')
         setNewNumber('')
+        setSuccessMessage('The new contact was added.')
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       } catch (error) {
         console.error("There's an error when you try to add a new person.");
       }
@@ -80,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <SuccessNotification message={successMessage} />
       <Filter filter={wordFiltered} handleChange={handleFilter} />
       <h2>Add a new</h2>
       <PersonForm
