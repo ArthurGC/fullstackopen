@@ -5,6 +5,7 @@ import ListPerson from './components/ListPerson'
 import SuccessNotification from './components/SuccessNotification'
 import actions from './services/persons'
 import './index.css'
+import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [wordFiltered, setWordFiltered] = useState('')
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     getAllPersons()
@@ -38,7 +40,10 @@ const App = () => {
     let isEmpty = newName.trim() && newNumber.trim()
     let personRepeated = persons.find((person) => person.name === newName)
     if (!isEmpty) {
-      alert('Fields are empty!')
+      setErrorMessage('One or both fields are empty.')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     } else if (personRepeated) {
       if (window.confirm(`${personRepeated.name} is already added to phonebook, the old number with a new one?`)) {
         const modifiedPerson = {
@@ -54,7 +59,11 @@ const App = () => {
             setSuccessMessage(null)
           }, 5000)
         } catch (error) {
-          console.error("There's an error when you try to delete a person.");
+          setErrorMessage(`Information of ${personRepeated.name} has already been removed from server.`)
+          setPersons(persons.filter(person => person.id !== personRepeated.id))
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         }
       }
     } else {
@@ -71,7 +80,10 @@ const App = () => {
           setSuccessMessage(null)
         }, 5000)
       } catch (error) {
-        console.error("There's an error when you try to add a new person.");
+        setErrorMessage('Failed to add a new contact.')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       }
     }
   }
@@ -82,8 +94,16 @@ const App = () => {
       try {
         await actions.remove(id)
         setPersons(persons.filter(person => person.id !== id))
+        setSuccessMessage('The contact was removed.')
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       } catch (error) {
-        console.error("There's an error when you try to delete a person.");
+        setErrorMessage(`Information of ${personSelected.name} has already been removed from server.`)
+        setPersons(persons.filter(person => person.id !== id))
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       }
     }
   }
@@ -92,6 +112,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <SuccessNotification message={successMessage} />
+      <ErrorNotification message={errorMessage} />
       <Filter filter={wordFiltered} handleChange={handleFilter} />
       <h2>Add a new</h2>
       <PersonForm
